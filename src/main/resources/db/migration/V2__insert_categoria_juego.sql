@@ -6,7 +6,7 @@ VALUES
     ('Terror',     'Juegos de terror y suspenso'),
     ('Estrategia', 'Juegos de estrategia y puzzle');
 
-INSERT INTO juego (nombre_juego, descripcion, precio, stock, activo, categoria_id)
+INSERT INTO juego (nombrejuego, descripcion, precio, stock, activo, categoria_id)
 VALUES
     ('God of War',       'Aventura épica nórdica',             29990.00, 50,  TRUE, 1),
     ('Elden Ring',       'RPG de mundo abierto',               39990.00, 30,  TRUE, 2),
