@@ -70,7 +70,7 @@ public class JuegoService {
     @Transactional
     public JuegoResponseDTO crearJuego(JuegoRequestDTO dto) {
 
-        if (juegoRepository.existsByNombreJuego(dto.getNombreJuego())) {
+        if (juegoRepository.existsByNombrejuego(dto.getNombreJuego())) {
 
             throw new BusinessException(
                     "Ya existe un juego con el nombre: "
@@ -88,7 +88,7 @@ public class JuegoService {
                 );
 
         Juego juego = Juego.builder()
-                .nombreJuego(dto.getNombreJuego())
+                .nombrejuego(dto.getNombreJuego())
                 .descripcion(dto.getDescripcion())
                 .precio(dto.getPrecio())
                 .stock(dto.getStock())
@@ -111,8 +111,8 @@ public class JuegoService {
                         )
                 );
 
-        if (!juego.getNombreJuego().equalsIgnoreCase(dto.getNombreJuego())
-                && juegoRepository.existsByNombreJuego(dto.getNombreJuego())) {
+        if (!juego.getNombrejuego().equalsIgnoreCase(dto.getNombreJuego())
+                && juegoRepository.existsByNombrejuego(dto.getNombreJuego())) {
 
             throw new BusinessException(
                     "Ya existe un juego con el nombre: "
@@ -129,7 +129,7 @@ public class JuegoService {
                         )
                 );
 
-        juego.setNombreJuego(dto.getNombreJuego());
+        juego.setNombrejuego(dto.getNombreJuego());
         juego.setDescripcion(dto.getDescripcion());
         juego.setPrecio(dto.getPrecio());
         juego.setStock(dto.getStock());
@@ -179,7 +179,7 @@ public class JuegoService {
 
         return JuegoResponseDTO.builder()
                 .idJuego(juego.getIdJuego())
-                .nombreJuego(juego.getNombreJuego())
+                .nombreJuego(juego.getNombrejuego())
                 .descripcion(juego.getDescripcion())
                 .precio(juego.getPrecio())
                 .stock(juego.getStock())

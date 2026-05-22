@@ -16,9 +16,9 @@ public interface JuegoRepository extends JpaRepository<Juego, Long> {
 
     List<Juego> findByCategoriaIdCategoriaAndActivoTrue(Long idCategoria);
 
-    List<Juego> findByNombreJuegoContainingIgnoreCase(String nombre);
+    List<Juego> findByNombrejuegoContainingIgnoreCase(String nombre);
 
-    boolean existsByNombreJuego(String nombreJuego);
+    boolean existsByNombrejuego(String nombrejuego);
 
-    Optional<Juego> findByNombreJuegoIgnoreCase(String nombreJuego);
+    Optional<Juego> findByNombrejuegoIgnoreCase(String nombrejuego);
 }

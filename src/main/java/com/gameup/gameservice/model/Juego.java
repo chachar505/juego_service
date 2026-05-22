@@ -21,8 +21,8 @@ public class Juego {
 
     @NotBlank
     @Size(max = 150)
-    @Column(name = "nombreJuego")
-    private String nombreJuego;
+    @Column(name = "nombrejuego")
+    private String nombrejuego;
 
     @Size(max = 500)
     @Column(length = 500)
