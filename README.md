@@ -1,0 +1,1 @@
+Catálogo de videojuegos y categorías. Expone endpoints para crear, listar, actualizar y desactivar juegos, además de gestionar las categorías a las que pertenecen. Permite filtrar juegos por categoría y por estado activo.
