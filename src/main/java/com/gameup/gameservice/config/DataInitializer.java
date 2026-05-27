@@ -21,13 +21,13 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Verificamos si ya hay datos para no duplicar
+
         if (categoriaRepository.count() > 0 || juegoRepository.count() > 0) {
             log.info(">>> Categorías y juegos ya cargados. Se omite la inicialización.");
             return;
         }
 
-        // --- CATEGORÍAS ---
+
         Categoria accion = new Categoria();
         accion.setNombre("Acción");
         accion.setDescripcion("Juegos de acción y aventura");
@@ -56,7 +56,7 @@ public class DataInitializer implements CommandLineRunner {
 
         log.info(">>> 5 categorías cargadas OK.");
 
-        // --- JUEGOS ---
+
         Juego juego1 = new Juego();
         juego1.setNombrejuego("God of War");
         juego1.setDescripcion("Aventura épica nórdica");
