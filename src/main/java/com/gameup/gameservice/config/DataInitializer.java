@@ -6,10 +6,13 @@ import com.gameup.gameservice.repository.CategoriaRepository;
 import com.gameup.gameservice.repository.JuegoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.datafaker.Faker;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -20,89 +23,43 @@ public class DataInitializer implements CommandLineRunner {
     private final JuegoRepository juegoRepository;
 
     @Override
-    public void run(String... args) throws Exception {
-
+    public void run(String... args) {
         if (categoriaRepository.count() > 0 || juegoRepository.count() > 0) {
             log.info(">>> Categorías y juegos ya cargados. Se omite la inicialización.");
             return;
         }
 
+        Faker faker = new Faker();
 
-        Categoria accion = new Categoria();
-        accion.setNombre("Acción");
-        accion.setDescripcion("Juegos de acción y aventura");
+        List<Categoria> categorias = List.of(
+                Categoria.builder().nombre("Acción").descripcion("Juegos de acción y aventura").build(),
+                Categoria.builder().nombre("RPG").descripcion("Juegos de rol y estrategia").build(),
+                Categoria.builder().nombre("Deportes").descripcion("Juegos deportivos y simulación").build(),
+                Categoria.builder().nombre("Terror").descripcion("Juegos de terror y suspenso").build(),
+                Categoria.builder().nombre("Estrategia").descripcion("Juegos de estrategia y puzzle").build()
+        );
 
-        Categoria rpg = new Categoria();
-        rpg.setNombre("RPG");
-        rpg.setDescripcion("Juegos de rol y estrategia");
-
-        Categoria deportes = new Categoria();
-        deportes.setNombre("Deportes");
-        deportes.setDescripcion("Juegos deportivos y simulación");
-
-        Categoria terror = new Categoria();
-        terror.setNombre("Terror");
-        terror.setDescripcion("Juegos de terror y suspenso");
-
-        Categoria estrategia = new Categoria();
-        estrategia.setNombre("Estrategia");
-        estrategia.setDescripcion("Juegos de estrategia y puzzle");
-
-        categoriaRepository.save(accion);
-        categoriaRepository.save(rpg);
-        categoriaRepository.save(deportes);
-        categoriaRepository.save(terror);
-        categoriaRepository.save(estrategia);
-
+        List<Categoria> categoriasGuardadas = categoriaRepository.saveAll(categorias);
         log.info(">>> 5 categorías cargadas OK.");
 
+        for (int i = 0; i < 10; i++) {
+            Categoria categoriaAleatoria = categoriasGuardadas.get(
+                    faker.number().numberBetween(0, categoriasGuardadas.size())
+            );
 
-        Juego juego1 = new Juego();
-        juego1.setNombrejuego("God of War");
-        juego1.setDescripcion("Aventura épica nórdica");
-        juego1.setPrecio(new BigDecimal("29990.00"));
-        juego1.setStock(50);
-        juego1.setActivo(true);
-        juego1.setCategoria(accion);
+            Juego juego = Juego.builder()
+                    .nombrejuego(faker.videoGame().title() + " " + faker.number().numberBetween(1, 100))
+                    .descripcion(faker.lorem().sentence(8))
+                    .precio(BigDecimal.valueOf(faker.number().randomDouble(2, 5, 60))
+                            .setScale(2, RoundingMode.HALF_UP))
+                    .stock(faker.number().numberBetween(0, 100))
+                    .activo(true)
+                    .categoria(categoriaAleatoria)
+                    .build();
 
-        Juego juego2 = new Juego();
-        juego2.setNombrejuego("Elden Ring");
-        juego2.setDescripcion("RPG de mundo abierto");
-        juego2.setPrecio(new BigDecimal("39990.00"));
-        juego2.setStock(30);
-        juego2.setActivo(true);
-        juego2.setCategoria(rpg);
+            juegoRepository.save(juego);
+        }
 
-        Juego juego3 = new Juego();
-        juego3.setNombrejuego("FIFA 25");
-        juego3.setDescripcion("Simulador de fútbol");
-        juego3.setPrecio(new BigDecimal("34990.00"));
-        juego3.setStock(100);
-        juego3.setActivo(true);
-        juego3.setCategoria(deportes);
-
-        Juego juego4 = new Juego();
-        juego4.setNombrejuego("Resident Evil 4");
-        juego4.setDescripcion("Horror y acción en tercera persona");
-        juego4.setPrecio(new BigDecimal("24990.00"));
-        juego4.setStock(40);
-        juego4.setActivo(true);
-        juego4.setCategoria(terror);
-
-        Juego juego5 = new Juego();
-        juego5.setNombrejuego("Civilization VII");
-        juego5.setDescripcion("Estrategia por turnos");
-        juego5.setPrecio(new BigDecimal("44990.00"));
-        juego5.setStock(20);
-        juego5.setActivo(true);
-        juego5.setCategoria(estrategia);
-
-        juegoRepository.save(juego1);
-        juegoRepository.save(juego2);
-        juegoRepository.save(juego3);
-        juegoRepository.save(juego4);
-        juegoRepository.save(juego5);
-
-        log.info(">>> 5 juegos cargados OK.");
+        log.info(">>> 10 juegos generados con DataFaker OK.");
     }
 }
